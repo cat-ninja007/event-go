@@ -1,17 +1,14 @@
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import { AuthProvider } from "./hooks/useAuth";
-import AppRoutes from "./routes";
-
-// Use an empty theme to debug Chakra UI
-const theme = extendTheme({});
-
+import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 function App() {
   return (
-    <ChakraProvider theme={theme}>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
-    </ChakraProvider>
+    <Router>
+      <Routes>
+        <Route path="/" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
+    </Router>
   );
 }
 
