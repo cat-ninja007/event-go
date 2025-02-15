@@ -1,6 +1,7 @@
+import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
-import Home from "./pages/Home";
+import EventDetail from "./pages/EventDetails";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/event/:id" element={<EventDetail />} />
       </Routes>
     </Router>
   );

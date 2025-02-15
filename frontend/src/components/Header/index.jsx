@@ -26,7 +26,7 @@ const Header = () => {
         px={"120px"}
       >
         <Flex>
-          <Heading color={"black"} size={"3xl"}>
+          <Heading as={RouterLink} to={"/"} color={"black"} size={"3xl"}>
             Event{" "}
             <Text display={"inline"} color={"#7848F4"}>
               Go
