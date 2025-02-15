@@ -11,7 +11,7 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { Field } from "../components/ui/field";
-import {Link as RouterLink}  from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
 const SignIn = () => {
   return (
@@ -21,11 +21,12 @@ const SignIn = () => {
         display="flex"
         alignItems="center"
         justifyContent="center"
-        p={4}
+        p={{ base: 6, md: 8 }}
         backgroundColor={"#F8F8FA"}
+        height={{ base: "100vh", md: "auto" }}
       >
         <Card.Root
-          width="80%"
+          maxWidth="100%"
           p={6}
           border={"none"}
           backgroundColor={"#F8F8FA"}
@@ -35,6 +36,9 @@ const SignIn = () => {
               textAlign="center"
               fontSize={"2xl"}
               marginBottom={"40px"}
+              as={RouterLink}
+              to="/"
+              _hover={{ cursor: "pointer"}}
             >
               Event{" "}
               <Text as="span" color={"#7848F4"}>
@@ -50,9 +54,31 @@ const SignIn = () => {
               Sign In to Event Go
             </Card.Description>
           </Card.Header>
-          <Card.Body marginBottom={"40px"}>
-            <Stack gap="10" w="full">
-              <Field label="YOUR EMAIL">
+          <Card.Body marginBottom={"40px"} padding={"0px"}>
+            <Stack gap="10" width={"100%"}>
+              <Field label="YOUR EMAIL" width={{ base: "full", md: "400px" }}>
+                <Input
+                  backgroundColor={"white"}
+                  border={"none"}
+                  placeholder="Enter your email"
+                />
+              </Field>
+              <Field
+                label="YOUR PASSWORD"
+                width={{ base: "full", md: "400px" }}
+              >
+                <Input
+                  backgroundColor={"white"}
+                  border={"none"}
+                  placeholder="Enter your password"
+                />
+              </Field>
+            </Stack>
+          </Card.Body>
+          {/* <Card.Body marginBottom={"40px"}>
+            <Stack gap="10" w="full" borderRightWidth={"1px"}
+        borderColor={"#7848F4"}>
+              <Field label="YOUR EMAIL" width={{ base: "full", md: "400px" }}>
                 <Input
                   backgroundColor={"white"}
                   border={"none"}
@@ -60,7 +86,12 @@ const SignIn = () => {
                 />
               </Field>
               <Box>
-                <Flex justify="space-between" align="center" mb="1">
+                <Flex
+                  justify="space-between"
+                  align="center"
+                  mb="1"
+                  width={{ base: "full", md: "400px" }}
+                >
                   <Text fontWeight="bold">PASSWORD</Text>
                   <Link
                     href="#"
@@ -78,15 +109,38 @@ const SignIn = () => {
                 />
               </Box>
             </Stack>
-          </Card.Body>
-          <Card.Footer justifyContent="center">
-            <Button variant="solid" backgroundColor={"#7848F4"} width={"257px"}>
-              Sign In
+          </Card.Body> */}
+          <Card.Footer
+            justifyContent="center"
+            display={"flex"}
+            flexDirection={"column"}
+            padding={"0px"}
+          >
+            <Button variant="solid" backgroundColor={"#7848F4"} width={"100%"}>
+              Sign Up
             </Button>
+            <Text color={"gray.500"} display={{ base: "flex", md: "none" }}>
+              Don't have an account?
+              <Link
+                href="/SignUp"
+                display={"inline"}
+                color={"gray.500"}
+                cursor={"pointer"}
+                textDecoration={"underline"}
+              >
+                Sign Up
+              </Link>
+            </Text>
           </Card.Footer>
         </Card.Root>
       </Box>
-      <Box position={"relative"} width={600} height="100vh" overflow="hidden">
+      <Box
+        position={"relative"}
+        width={{ base: "100%", md: "600px" }}
+        height="100vh"
+        overflow="hidden"
+        display={{ base: "none", md: "block" }}
+      >
         <Image src="signin.jpg" width="100%" height="100%" objectFit="cover" />
 
         {/* Overlay Content */}
@@ -101,9 +155,22 @@ const SignIn = () => {
           width={"80%"}
           color="white"
         >
-          <Text fontSize={"40px"} fontWeight={"bold"} mb={"40px"}>Welcome back</Text>
-          <Text fontSize={"16px"} mb={"40px"} shadow={"xl"}>To keep connected with us, provide us with your information</Text>
-          <Button as={RouterLink} to="/SignUp" bg={"gray.600/90"} width={"30%"} height={"49px"} rounded={"md"} color="white" _hover={{ bg: "whiteAlpha.400" }}>
+          <Text fontSize={"40px"} fontWeight={"bold"} mb={"40px"}>
+            Welcome back
+          </Text>
+          <Text fontSize={"16px"} mb={"40px"} shadow={"xl"}>
+            To keep connected with us, provide us with your information
+          </Text>
+          <Button
+            as={RouterLink}
+            to="/SignUp"
+            bg={"gray.600/90"}
+            width={"30%"}
+            height={"49px"}
+            rounded={"md"}
+            color="white"
+            _hover={{ bg: "whiteAlpha.400" }}
+          >
             Sign Up
           </Button>
         </Flex>

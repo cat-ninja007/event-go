@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Card,
@@ -8,14 +8,29 @@ import {
   Flex,
   Image,
   Text,
+  Link
 } from "@chakra-ui/react";
 import { Field } from "../components/ui/field";
-import { Link as RouterLink} from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import {
+  MenuContent,
+  MenuRadioItem,
+  MenuRadioItemGroup,
+  MenuRoot,
+  MenuTrigger,
+} from "@chakra-ui/react";
 
 const SignUp = () => {
-  return(
+  const [role, setRole] = useState("Choose Your Role");
+  return (
     <Flex>
-      <Box position={"relative"} width={600} height="100vh" overflow="hidden">
+      <Box
+        position={"relative"}
+        width={{ base: "100%", md: "600px" }}
+        height="100vh"
+        overflow="hidden"
+        display={{ base: "none", md: "block" }}
+      >
         <Image src="signup.jpg" width="100%" height="100%" objectFit="cover" />
 
         {/* Overlay Content */}
@@ -30,9 +45,22 @@ const SignUp = () => {
           width={"80%"}
           color="white"
         >
-          <Text fontSize={"40px"} fontWeight={"bold"} mb={"40px"}>Hello Friend</Text>
-          <Text fontSize={"16px"} mb={"40px"} shadow={"xl"}>To keep connected with us, provide us with your information</Text>
-          <Button as={RouterLink} to="/" bg={"gray.600/90"} width={"30%"} height={"49px"} rounded={"md"} color="white" _hover={{ bg: "whiteAlpha.400" }}>
+          <Text fontSize={"40px"} fontWeight={"bold"} mb={"40px"}>
+            Hello Friend
+          </Text>
+          <Text fontSize={"16px"} mb={"40px"} shadow={"xl"}>
+            To keep connected with us, provide us with your information
+          </Text>
+          <Button
+            as={RouterLink}
+            to="/"
+            bg={"gray.600/90"}
+            width={"30%"}
+            height={"49px"}
+            rounded={"md"}
+            color="white"
+            _hover={{ bg: "whiteAlpha.400" }}
+          >
             Signin
           </Button>
         </Flex>
@@ -46,7 +74,7 @@ const SignUp = () => {
         backgroundColor={"#F8F8FA"}
       >
         <Card.Root
-          width="80%"
+          maxWidth="100%"
           p={6}
           border={"none"}
           backgroundColor={"#F8F8FA"}
@@ -56,6 +84,9 @@ const SignUp = () => {
               textAlign="center"
               fontSize={"2xl"}
               marginBottom={"40px"}
+              as={RouterLink}
+              to="/"
+              _hover={{ cursor: "pointer"}}
             >
               Event{" "}
               <Text as="span" color={"#7848F4"}>
@@ -71,28 +102,76 @@ const SignUp = () => {
               Sign Up to Event Go
             </Card.Description>
           </Card.Header>
-          <Card.Body marginBottom={"40px"}>
+          <Card.Body marginBottom={"40px"} padding={"0px"}>
             <Stack gap="10" w="full">
-              <Field label="YOUR NAME">
-                <Input backgroundColor={"white"} border={"none"} placeholder="Enter your name" />
+              <Field label="YOUR NAME" width={{ base: "full", md: "400px" }}>
+                <Input
+                  backgroundColor={"white"}
+                  border={"none"}
+                  placeholder="Enter your name"
+                />
               </Field>
-              <Field label="YOUR EMAIL">
-                <Input backgroundColor={"white"} border={"none"} placeholder="Enter your email" />
+              <Field label="YOUR EMAIL" width={{ base: "full", md: "400px" }}>
+                <Input
+                  backgroundColor={"white"}
+                  border={"none"}
+                  placeholder="Enter your email"
+                />
               </Field>
-              <Field label="YOUR PASSWORD">
-                <Input backgroundColor={"white"} border={"none"} placeholder="Enter your password" />
+              <Field
+                label="YOUR PASSWORD"
+                width={{ base: "full", md: "400px" }}
+              >
+                <Input
+                  backgroundColor={"white"}
+                  border={"none"}
+                  placeholder="Enter your password"
+                />
+              </Field>
+              <Field label="YOUR ROLE" width={{ base: "full", md: "400px" }}>
+                <MenuRoot>
+                  <MenuTrigger asChild>
+                    <Button
+                      variant={"solid"}
+                      size={"sm"}
+                      borderWidth={"1px"}
+                      borderColor={"#7848F4"}
+                      backgroundColor={"white"}
+                      color={"#7848F4"}
+                      width={{ base: "full", md: "400px" }}
+                      textAlign={"left"}
+                    >
+                      {role}
+                    </Button>
+                  </MenuTrigger>
+
+                  <MenuContent>
+                    <MenuRadioItemGroup
+                      value={role}
+                      onValueChange={(e) => setRole(e.value)}
+                      width={{ base: "full", md: "400px" }}
+                    >
+                      <MenuRadioItem value="User">User</MenuRadioItem>
+                      <MenuRadioItem value="Organizer">Organizer</MenuRadioItem>
+                    </MenuRadioItemGroup>
+                  </MenuContent>
+                </MenuRoot>
               </Field>
             </Stack>
           </Card.Body>
-          <Card.Footer justifyContent="center">
-            <Button variant="solid" backgroundColor={"#7848F4"} width={"257px"}>
+          <Card.Footer justifyContent="center" display={"flex"} flexDirection={"column"} padding={"0px"}>
+            <Button variant="solid" backgroundColor={"#7848F4"} width={"100%"}>
               Sign Up
             </Button>
+            <Text color={"gray.500"} display={{base: "flex", md: "none"}}>
+              Already have an account?<Link href="/" display={"inline"} color={"gray.500"} cursor={"pointer"} textDecoration={"underline"}>Sign In</Link>
+            </Text>
+            
           </Card.Footer>
         </Card.Root>
       </Box>
     </Flex>
-  )
+  );
 };
 
 export default SignUp;
