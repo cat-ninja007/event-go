@@ -11,5 +11,6 @@ func TicketRoutes(r *gin.Engine) {
 	ticket := r.Group("/api/v1/tickets", middleware.AuthMiddleware("ORGANIZER")) // ✅ Only ORGANIZERS can create tickets
 	{
 		ticket.POST("/create", controllers.CreateTicket)
+		ticket.GET("/event/:eventId", controllers.GetTicketsByEvent)
 	}
 }

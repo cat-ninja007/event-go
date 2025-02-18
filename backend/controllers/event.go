@@ -83,3 +83,25 @@ func CreateEvent(c *gin.Context) {
 		},
 	})
 }
+
+// GetEventsByOrganizer retrieves events created by the logged-in organizer
+func GetEventsByOrganizer(c *gin.Context) {
+	organizerID, exists := c.Get("userId")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
+		return
+	}
+
+	var events []models.Event
+	if err := config.DB.Where("organizer_id = ?", organizerID).Find(&events).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to retrieve events"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"statusCode": 200,
+		"message":    "Events retrieved successfully",
+		"success":    true,
+		"data":       events,
+	})
+}

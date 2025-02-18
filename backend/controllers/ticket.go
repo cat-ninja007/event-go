@@ -60,3 +60,21 @@ func CreateTicket(c *gin.Context) {
 		"data":       ticket,
 	})
 }
+
+// GetTicketsByEvent retrieves tickets for a specific event
+func GetTicketsByEvent(c *gin.Context) {
+	eventID := c.Param("eventId")
+
+	var tickets []models.Ticket
+	if err := config.DB.Where("event_id = ?", eventID).Find(&tickets).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to retrieve tickets"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"statusCode": 200,
+		"message":    "Tickets retrieved successfully",
+		"success":    true,
+		"data":       tickets,
+	})
+}
