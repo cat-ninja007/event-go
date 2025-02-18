@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 // Create Event Request Body
@@ -17,6 +18,16 @@ type CreateEventInput struct {
 	Image       string    `json:"image" binding:"required"`
 	StartDate   time.Time `json:"startDate" binding:"required"`
 	EndDate     time.Time `json:"endDate" binding:"required"`
+}
+
+// Update Event Request Body
+type UpdateEventInput struct {
+	Title       *string    `json:"title"`
+	Description *string    `json:"description"`
+	Location    *string    `json:"location"`
+	Image       *string    `json:"image"`
+	StartDate   *time.Time `json:"startDate"`
+	EndDate     *time.Time `json:"endDate"`
 }
 
 // CreateEvent handles event creation
@@ -55,6 +66,7 @@ func CreateEvent(c *gin.Context) {
 		OrganizerID: organizer.ID,   // Store Organizer's ID
 		CreatedAt:   time.Now().UTC(),
 		UpdatedAt:   time.Now().UTC(),
+		DeletedAt:   gorm.DeletedAt{Time: time.Time{}},
 	}
 
 	// Save event to database
@@ -85,7 +97,7 @@ func CreateEvent(c *gin.Context) {
 }
 
 // GetEventsByOrganizer retrieves events created by the logged-in organizer
-func GetEventsByOrganizer(c *gin.Context) {
+func GetAllEvents(c *gin.Context) {
 	organizerID, exists := c.Get("userId")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": "Unauthorized"})
@@ -94,6 +106,22 @@ func GetEventsByOrganizer(c *gin.Context) {
 
 	var events []models.Event
 	if err := config.DB.Where("organizer_id = ?", organizerID).Find(&events).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to retrieve events"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"statusCode": 200,
+		"message":    "Events retrieved successfully",
+		"success":    true,
+		"data":       events,
+	})
+}
+
+// GetAllEventsDatatable retrieves all events for homepage display
+func GetAllEventsDatatable(c *gin.Context) {
+	var events []models.Event
+	if err := config.DB.Find(&events).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to retrieve events"})
 		return
 	}
@@ -122,5 +150,72 @@ func GetEventByID(c *gin.Context) {
 		"message":    "Event retrieved successfully",
 		"success":    true,
 		"data":       event,
+	})
+}
+
+// UpdateEvent updates an existing event by ID
+func UpdateEvent(c *gin.Context) {
+	eventID := c.Param("eventId")
+
+	var event models.Event
+	if err := config.DB.First(&event, eventID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "Event not found"})
+		return
+	}
+
+	var input UpdateEventInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
+	config.DB.Model(&event).Updates(input)
+	c.JSON(http.StatusOK, gin.H{
+		"statusCode": 200,
+		"message":    "Event updated successfully",
+		"success":    true,
+		"data": gin.H{
+			"id":          event.ID,
+			"title":       event.Title,
+			"description": event.Description,
+			"location":    event.Location,
+			"image":       event.Image,
+			"startDate":   event.StartDate,
+			"endDate":     event.EndDate,
+			"organizer":   event.Organizer,
+			"organizerId": event.OrganizerID,
+			"createdAt":   event.CreatedAt,
+			"updatedAt":   event.UpdatedAt,
+		},
+	})
+}
+
+// DeleteEvent deletes an event by ID
+func DeleteEvent(c *gin.Context) {
+	eventID := c.Param("eventId")
+
+	// Validate event exists
+	var event models.Event
+	if err := config.DB.First(&event, eventID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "Event not found"})
+		return
+	}
+
+	// Delete associated tickets first
+	if err := config.DB.Where("event_id = ?", eventID).Delete(&models.Ticket{}).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to delete associated tickets"})
+		return
+	}
+
+	// Delete event
+	if err := config.DB.Delete(&event).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to delete event"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"statusCode": 200,
+		"message":    "Event deleted successfully",
+		"success":    true,
 	})
 }

@@ -98,7 +98,7 @@ const SignUp = () => {
         >
           <Text fontSize="40px" fontWeight="bold" mb="40px">Hello Friend</Text>
           <Text fontSize="16px" mb="40px" shadow="xl">To keep connected with us, provide us with your information</Text>
-          <Button as={RouterLink} to="/" bg="gray.600/90" width="30%" height="49px" rounded="md" color="white" _hover={{ bg: "whiteAlpha.400" }}>
+          <Button as={RouterLink} to="/signin" bg="gray.600/90" width="30%" height="49px" rounded="md" color="white" _hover={{ bg: "whiteAlpha.400" }}>
             Sign in
           </Button>
         </Flex>

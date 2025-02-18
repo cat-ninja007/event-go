@@ -39,7 +39,12 @@ func Register(c *gin.Context) {
 	// Validate JSON request body
 	var input RegisterInput
 	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{
+			"statusCode": 400,
+			"message":    "Invalid request body",
+			"success":    false,
+			"error":      err.Error(),
+		})
 		return
 	}
 

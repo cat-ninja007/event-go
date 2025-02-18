@@ -75,41 +75,6 @@ const SignIn = () => {
               </Field>
             </Stack>
           </Card.Body>
-          {/* <Card.Body marginBottom={"40px"}>
-            <Stack gap="10" w="full" borderRightWidth={"1px"}
-        borderColor={"#7848F4"}>
-              <Field label="YOUR EMAIL" width={{ base: "full", md: "400px" }}>
-                <Input
-                  backgroundColor={"white"}
-                  border={"none"}
-                  placeholder="Enter your email"
-                />
-              </Field>
-              <Box>
-                <Flex
-                  justify="space-between"
-                  align="center"
-                  mb="1"
-                  width={{ base: "full", md: "400px" }}
-                >
-                  <Text fontWeight="bold">PASSWORD</Text>
-                  <Link
-                    href="#"
-                    fontSize="sm"
-                    color="gray.500"
-                    _hover={{ color: "blue.500" }}
-                  >
-                    Forgot your password?
-                  </Link>
-                </Flex>
-                <Input
-                  backgroundColor="white"
-                  border="none"
-                  placeholder="Enter your password"
-                />
-              </Box>
-            </Stack>
-          </Card.Body> */}
           <Card.Footer
             justifyContent="center"
             display={"flex"}
@@ -117,7 +82,7 @@ const SignIn = () => {
             padding={"0px"}
           >
             <Button variant="solid" backgroundColor={"#7848F4"} width={"100%"}>
-              Sign Up
+              Sign In
             </Button>
             <Text color={"gray.500"} display={{ base: "flex", md: "none" }}>
               Don't have an account?
