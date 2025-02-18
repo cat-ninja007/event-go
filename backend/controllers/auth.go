@@ -134,6 +134,7 @@ func Login(c *gin.Context) {
 		"data": gin.H{
 			"accessToken": accessToken,
 			"tokenType":   "Bearer",
+			"role":        user.Role,
 		},
 	})
 }

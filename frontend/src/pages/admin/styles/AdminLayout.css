@@ -1,0 +1,12 @@
+/* Admin Layout Styles */
+.admin-layout {
+  display: flex;
+  height: 100vh;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 20px;
+  background: #f4f6f8;
+  overflow-y: auto;
+}

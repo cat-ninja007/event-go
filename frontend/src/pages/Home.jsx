@@ -17,11 +17,13 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EventCard from "../components/EventCard";
 import eventData from "../data/eventData";
+import Logout from "../components/Logout";
 
 const Home = () => {
   return (
     <Box>
       <Header />
+      <Logout />
 
       <Box
         position={"relative"}

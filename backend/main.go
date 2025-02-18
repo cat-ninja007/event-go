@@ -5,7 +5,9 @@ import (
 	"event-go-backend/models"
 	"event-go-backend/routes"
 	"log"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
@@ -14,6 +16,15 @@ var validate *validator.Validate
 
 func main() {
 	r := gin.Default()
+
+	// Enable CORS Middleware
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"}, // Frontend URL
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour, // Cache CORS response for 12 hours
+	}))
 
 	validate = validator.New()
 
