@@ -12,6 +12,7 @@ func EventRoutes(r *gin.Engine) {
 	event := r.Group("api/v1/events", middleware.AuthMiddleware("ORGANIZER"))
 	{
 		event.POST("/create", controllers.CreateEvent)
-		event.GET("/my-events", controllers.GetEventsByOrganizer)
+		event.GET("/", controllers.GetEventsByOrganizer)
+		event.GET("/:eventId", controllers.GetEventByID)
 	}
 }

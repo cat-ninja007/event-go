@@ -12,5 +12,6 @@ func TicketRoutes(r *gin.Engine) {
 	{
 		ticket.POST("/create", controllers.CreateTicket)
 		ticket.GET("/event/:eventId", controllers.GetTicketsByEvent)
+		ticket.GET("/event/:eventId/:ticketId", controllers.GetTicketByID)
 	}
 }

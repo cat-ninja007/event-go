@@ -105,3 +105,22 @@ func GetEventsByOrganizer(c *gin.Context) {
 		"data":       events,
 	})
 }
+
+// GetEventByID retrieves a single event by ID
+func GetEventByID(c *gin.Context) {
+	eventID := c.Param("eventId")
+
+	// Validate eventId as an integer before querying
+	var event models.Event
+	if err := config.DB.First(&event, eventID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "Event not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"statusCode": 200,
+		"message":    "Event retrieved successfully",
+		"success":    true,
+		"data":       event,
+	})
+}

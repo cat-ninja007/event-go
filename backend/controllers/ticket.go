@@ -78,3 +78,22 @@ func GetTicketsByEvent(c *gin.Context) {
 		"data":       tickets,
 	})
 }
+
+// GetTicketByID retrieves a single ticket by ID
+func GetTicketByID(c *gin.Context) {
+	ticketID := c.Param("ticketId")
+
+	// Validate ticketId as an integer before querying
+	var ticket models.Ticket
+	if err := config.DB.First(&ticket, ticketID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "Ticket not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"statusCode": 200,
+		"message":    "Ticket retrieved successfully",
+		"success":    true,
+		"data":       ticket,
+	})
+}
