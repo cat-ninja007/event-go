@@ -1,12 +1,14 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 
 	"event-go-backend/config"
@@ -48,7 +50,11 @@ func Register(c *gin.Context) {
 	}
 
 	// Hashing Password
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to hash password"})
+		return
+	}
 
 	// Create New Instance
 	// Create user record
@@ -57,8 +63,8 @@ func Register(c *gin.Context) {
 		Email:     input.Email,
 		Password:  string(hashedPassword),
 		Role:      models.Role(input.Role),
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		CreatedAt: time.Now().Local().UTC(),
+		UpdatedAt: time.Now().Local().UTC(),
 		DeletedAt: nil, // Explicitly set deletedAt as null
 	}
 
@@ -97,12 +103,20 @@ func Login(c *gin.Context) {
 
 	var user models.User
 	if err := config.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid credentials"})
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"statusCode": 404,
+			"message":    "User not found",
+			"success":    false,
+		})
 		return
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid credentials"})
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"statusCode": 401,
+			"message":    "Invalid credentials",
+			"success":    false,
+		})
 		return
 	}
 
@@ -121,12 +135,25 @@ func Login(c *gin.Context) {
 
 func generateToken(user models.User) string {
 	secret := os.Getenv("SECRET_KEY")
+	if secret == "" {
+		log.Fatal("SECRET_KEY is not set in environment variables")
+	}
+
+	// Token expiration
+	tokenExpiration := time.Hour * 1
+	if os.Getenv("TOKEN_EXPIRY") != "" {
+		parsed, err := time.ParseDuration(os.Getenv("TOKEN_EXPIRY"))
+		if err == nil {
+			tokenExpiration = parsed
+		}
+	}
 
 	claims := jwt.MapClaims{
 		"sub":    user.Email,
 		"role":   user.Role,
-		"exp":    time.Now().Add(time.Hour * 1).Unix(), // Token expires in 1 hour
+		"exp":    time.Now().Add(tokenExpiration).Unix(),
 		"iat":    time.Now().Unix(),
+		"jti":    uuid.NewString(),
 		"userId": user.ID,
 	}
 
