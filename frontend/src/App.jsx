@@ -25,10 +25,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<PrivateRoute allowedRoles={["ATTENDEE"]}><Home /></PrivateRoute>} />
+        <Route path="/" element={<PrivateRoute allowedRoles={["ATTENDEE", "ORGANIZER"]}><Home /></PrivateRoute>} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/event/:id" element={<EventDetail />} />
+        <Route path="/events/:id" element={<EventDetail />} />
         {/* <Route path="/admin-dashboard" element={<PrivateRoute allowedRoles={["ORGANIZER"]}><AdminDashboard /></PrivateRoute>} />
         <Route path="/admin/events" element={<PrivateRoute allowedRoles={["ORGANIZER"]}><ManageEvents /></PrivateRoute>} /> */}
         <Route path="/admin" element={<PrivateRoute allowedRoles={["ORGANIZER"]}><AdminLayout /></PrivateRoute>}>

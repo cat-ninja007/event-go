@@ -87,19 +87,6 @@ const EventDetail = () => {
           <Text>{event.tags}</Text>
         </Box>
       </Flex>
-
-      {/* <Box p={6}>
-        <Heading mt={4}>{event.title}</Heading>
-        <Text fontSize="lg" color="gray.600" mt={2}>
-          {event.description}
-        </Text>
-        <Text fontSize="xl" fontWeight="bold" mt={4}>
-          ${event.price}
-        </Text>
-        <Button mt={6} colorScheme="teal">
-          Buy Now
-        </Button>
-      </Box> */}
       <Footer />
     </>
   );
