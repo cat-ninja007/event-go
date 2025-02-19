@@ -19,7 +19,7 @@ import { Link as RouterLink } from "react-router-dom";
 
 const Footer = () => {
   return(
-    <Container backgroundColor={"#10107B"} height={"auto"}>
+    <Container  maxW={'100%'} backgroundColor={"#10107B"} height={"auto"}>
         <Box
           display={"flex"}
           alignItems={"center"}

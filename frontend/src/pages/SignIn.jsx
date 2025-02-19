@@ -14,54 +14,94 @@ import { Field } from "../components/ui/field";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// const SignIn = () => {
+//   const [email, setEmail] = useState("");
+//   const [password, setPassword] = useState("");
+//   const [error, setError] = useState("");
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const token = localStorage.getItem("token");
+//     const role = localStorage.getItem("role");
+  
+//     if (token && role) {
+//       if (role === "ORGANIZER") {
+//         navigate("/admin", { replace: true }); // Redirect only if user is logged in
+//       } else if (role === "ATTENDEE") {
+//         navigate("/", { replace: true });
+//       } else {
+//         navigate("/", { replace: true })
+//       }
+//     }
+//   }, [navigate]);
+  
+
+//   const handleLogin = async () => {
+//     try {
+//       const response = await axios.post(
+//         "http://localhost:8080/api/v1/auth/login",
+//         {
+//           email,
+//           password,
+//         },
+//         {
+//           withCredentials: true, // Ensure credentials are sent
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       );
+  
+//       console.log("Login Response:", response.data); // Debugging Log
+  
+//       const { accessToken, role } = response.data.data;
+//       localStorage.setItem("token", accessToken);
+//       localStorage.setItem("role", role);
+  
+//       if (role === "ORGANIZER") {
+//         navigate("/admin");
+//       } else {
+//         navigate("/");
+//       }
+//     } catch (err) {
+//       console.error("Login Error:", err.response ? err.response.data : err.message);
+//       setError("Invalid email or password");
+//     }
+//   };
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const role = localStorage.getItem("role");
-    if (role === "ORGANIZER") {
-      navigate("/admin-dashboard");
-    } else if (role === "ATTENDEE") {
-      navigate("/");
-    }
-  }, [navigate]);
-
   const handleLogin = async () => {
     try {
       const response = await axios.post(
         "http://localhost:8080/api/v1/auth/login",
+        { email, password },
         {
-          email,
-          password,
-        },
-        {
-          withCredentials: true, // Ensure credentials are sent
-          headers: {
-            "Content-Type": "application/json",
-          },
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
         }
       );
-  
-      console.log("Login Response:", response.data); // Debugging Log
-  
+
+      console.log("Login Response:", response.data);
+
       const { accessToken, role } = response.data.data;
       localStorage.setItem("token", accessToken);
       localStorage.setItem("role", role);
-  
+
+      // Redirect based on role
       if (role === "ORGANIZER") {
-        navigate("/admin");
+        navigate("/admin", { replace: true });
       } else {
-        navigate("/");
+        navigate("/", { replace: true });
       }
     } catch (err) {
       console.error("Login Error:", err.response ? err.response.data : err.message);
       setError("Invalid email or password");
     }
   };
-  
   
 
   return (
