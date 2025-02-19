@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
   Box,
   Button,
@@ -16,10 +16,28 @@ import {
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EventCard from "../components/EventCard";
-import eventData from "../data/eventData";
+// import eventData from "../data/eventData";
 import Logout from "../components/Logout";
 
+import axios from "axios";
+
 const Home = () => {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/v1/events/datatable");
+        setEvents(response.data.data); // Assuming the API response contains `data`
+        console.log(response)
+      } catch (error) {
+        console.error("Failed to fetch events", error);
+      }
+    };
+    
+    fetchEvents();
+  }, []);
+
   return (
     <Box>
       <Header />
@@ -69,13 +87,22 @@ const Home = () => {
           </Heading>
         </Flex>
 
-        <Flex gap={"20px"} flexWrap={"wrap"} mb={"60px"}>
+        {/* <Flex gap={"20px"} flexWrap={"wrap"} mb={"60px"}>
           
           {
             eventData.map((event) => (
               <EventCard key={event.id} {...event} />
             ))
           }
+        </Flex> */}
+        <Flex gap="20px" flexWrap="wrap" mb="60px">
+          {events.length > 0 ? (
+            events.map((event) => (
+              <EventCard key={event.id} {...event} />
+            ))
+          ) : (
+            <Text>No events available</Text>
+          )}
         </Flex>
       </Box>
 

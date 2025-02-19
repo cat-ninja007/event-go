@@ -212,3 +212,27 @@ func CloseTicket(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"statusCode": 200, "message": "Ticket closed successfully", "success": true, "data": ticket})
 }
+
+func GetReleasedTickets(c *gin.Context) {
+	var tickets []models.Ticket
+	eventId := c.Query("eventId") // Get eventId from query params
+
+	// Check if eventId is provided
+	if eventId == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Event ID is required"})
+		return
+	}
+
+	// Fetch only released tickets
+	if err := config.DB.Where("event_id = ? AND is_released = ?", eventId, true).Find(&tickets).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to retrieve released tickets"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"statusCode": 200,
+		"message":    "Released tickets retrieved successfully",
+		"success":    true,
+		"data":       tickets,
+	})
+}

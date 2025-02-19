@@ -371,7 +371,7 @@ const ManageEvents = () => {
                         <strong>Name:</strong> {ticket.name}
                       </p>
                       <p>
-                        <strong>Price:</strong> ${ticket.price}
+                        <strong>Price:</strong> Rp.{ticket.price.toLocaleString('id-ID')}
                       </p>
                       <p>
                         <strong>Available Seats:</strong> {ticket.availableSeat}
