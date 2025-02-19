@@ -1,13 +1,11 @@
 /* Admin Layout Styles */
 .admin-layout {
   display: flex;
-  border: 2px solid red;
   width: 100%;
   height: 100vh;
 }
 
 .admin-main-content {
-  border: 2px solid green;
   width: 100%;
 }
 
@@ -17,5 +15,4 @@
   padding: 20px;
   background: #f4f6f8;
   overflow-y: auto;
-  border: 2px solid blue;
 }

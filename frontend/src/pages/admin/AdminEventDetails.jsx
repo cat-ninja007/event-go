@@ -2,10 +2,10 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Box, Heading, Text, Image, Button, Flex } from "@chakra-ui/react";
 import axios from "axios";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
-const EventDetail = () => {
+const AdminEventDetail = () => {
   const { id } = useParams(); // Get event ID from URL
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -20,6 +20,7 @@ const EventDetail = () => {
           },
         });
         setEvent(response.data.data);
+        console.log(token)
       } catch (error) {
         console.error("Failed to fetch event", error);
       } finally {
@@ -89,7 +90,7 @@ const EventDetail = () => {
   );
 };
 
-export default EventDetail;
+export default AdminEventDetail;
 
 
 

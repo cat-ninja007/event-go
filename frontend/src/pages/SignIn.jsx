@@ -82,7 +82,14 @@ const SignIn = () => {
           backgroundColor={"#F8F8FA"}
         >
           <Card.Header>
-            <Card.Title textAlign="center" fontSize={"2xl"} marginBottom={"40px"}>
+            <Card.Title 
+              textAlign="center" 
+              fontSize={"2xl"} 
+              marginBottom={"40px"}
+              as={RouterLink}
+              to="/"
+              _hover={{ cursor: "pointer" }}
+            >
               Event <Text as="span" color={"#7848F4"}>Go</Text>
             </Card.Title>
             <Card.Description
@@ -135,8 +142,62 @@ const SignIn = () => {
             >
               Sign In
             </Button>
+            <Text color={"gray.500"} display={{ base: "flex", md: "none" }}>
+               Don't have an account?
+               <Link
+                 href="/SignUp"
+                 display={"inline"}
+                 color={"gray.500"}
+                 cursor={"pointer"}
+                 textDecoration={"underline"}
+               >
+                 Sign Up
+               </Link>
+             </Text>
           </Card.Footer>
         </Card.Root>
+      </Box>
+
+      <Box
+        position={"relative"}
+        width={{ base: "100%", md: "600px" }}
+        height="100vh"
+        overflow="hidden"
+        display={{ base: "none", md: "block" }}
+      >
+        <Image src="signin.jpg" width="100%" height="100%" objectFit="cover" />
+
+        {/* Overlay Content */}
+        <Flex
+          position="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          flexDirection="column"
+          alignItems="center"
+          textAlign={"center"}
+          width={"80%"}
+          color="white"
+        >
+          <Text fontSize={"40px"} fontWeight={"bold"} mb={"40px"}>
+            Welcome back
+          </Text>
+          <Text fontSize={"16px"} mb={"40px"} shadow={"xl"}>
+            To keep connected with us, provide us with your information
+          </Text>
+          <Button
+            as={RouterLink}
+            to="/SignUp"
+            bg={"gray.600/90"}
+            width={"30%"}
+            height={"49px"}
+            rounded={"md"}
+            color="white"
+            _hover={{ bg: "whiteAlpha.400" }}
+          >
+            Sign Up
+          </Button>
+        </Flex>
       </Box>
     </Flex>
   );
